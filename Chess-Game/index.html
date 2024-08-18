@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Board with Voice Commands</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <div class="chessboard" id="chessboard"></div>
+    <div id="controls">
+        <input type="text" id="moveInput" placeholder="Enter move (e.g., black-rook to a4)">
+        <button onclick="movePieceByInput()">Move</button>
+        <button onclick="startVoiceCommand()">Voice Command</button>
+        <div id="response" class="response"></div> <!-- Display response here -->
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
