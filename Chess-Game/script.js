@@ -9,20 +9,21 @@ function createChessboard() {
 
         for (let col = 0; col < 8; col++) {
             const squareDiv = document.createElement('div');
-            squareDiv.className = (row + col) % 2 === 0 ? 'square white' : 'square black';
-            squareDiv.id = columns[col] + row;
+            // Update the class to match the rotated board orientation
+            squareDiv.className = (row + col) % 2 === 0 ? 'square black' : 'square white';
+            squareDiv.id = columns[7 - col] + (9 - row); // Adjust IDs for new orientation
 
             const notation = document.createElement('div');
             notation.className = 'notation';
-            notation.textContent = columns[col] + row;
+            notation.textContent = columns[7 - col] + (9 - row); // Update notation for new orientation
 
             // Add class for chess piece image based on notation value
-            const chessPieceClass = getChessPieceClass(columns[col] + row);
+            const chessPieceClass = getChessPieceClass(columns[7 - col] + (9 - row));
             if (chessPieceClass) {
                 const chessPiece = document.createElement('div');
                 chessPiece.className = 'chess-piece ' + chessPieceClass;
                 chessPiece.draggable = true; // Make chess pieces draggable
-                chessPiece.id = columns[col] + row + '-' + chessPieceClass; // Set a unique ID for each piece
+                chessPiece.id = columns[7 - col] + (9 - row) + '-' + chessPieceClass; // Set a unique ID for each piece
                 squareDiv.appendChild(chessPiece);
             }
 
@@ -33,6 +34,7 @@ function createChessboard() {
         chessboardContainer.appendChild(rowDiv);
     }
 }
+
 
 // Function to get the chess piece class based on notation value
 function getChessPieceClass(notation) {
@@ -362,6 +364,7 @@ const corrections = {
     'b': 'b',
 
     'c': 'c',
+    'she':'c',
     'cc': 'c',
     'ch': 'c',
     'ci': 'c',
