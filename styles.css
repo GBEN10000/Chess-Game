@@ -1,0 +1,249 @@
+/* General Styles */
+body {
+    background-color: #393745; /* Dark gray background */
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Adjusted chessboard size */
+.chessboard {
+    display: grid;
+    grid-template-columns: repeat(8, 89px); /* Maintain the size of each column */
+    grid-template-rows: repeat(8, 89px); /* Maintain the size of each row */
+    border: 7px solid #151414;
+    margin: auto; /* Center the chessboard horizontally */
+    position: absolute; /* Position the chessboard absolutely */
+    top: 50%; /* Move the chessboard down by 50% of the viewport height */
+    left: 50%; /* Move the chessboard right by 50% of the viewport width */
+    transform: translate(-50%, -50%) rotate(90deg); /* Rotate the chessboard 90 degrees to the left */
+    transform-origin: center; /* Ensure the rotation happens around the center */
+    /* Adjust the size of the chessboard to maintain its original appearance after rotation */
+    width: 89px * 8; /* 8 columns each 89px wide */
+    height: 89px * 8; /* 8 rows each 89px tall */
+}
+
+
+.square {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Define styles for white and black squares */
+.white {
+    background-color: #fffefd;
+}
+
+.black {
+    background-color: #ae83f3; /* Adjust color as needed */
+}
+
+/* Notation styles */
+.notation {
+    position: absolute;
+    font-size: 12px; /* Adjust font size as needed */
+    color: #180303; /* Adjust color as needed */
+    z-index: 2; /* Ensure notations are above chess pieces */
+    bottom: 5px; /* Adjust to position notation at the bottom of each square */
+    left: 5px; /* Adjust to position notation at the left of each square */
+    transform: rotate(-90deg); /* Rotate notation back to upright */
+}
+
+/* Style for chess pieces */
+.chess-piece {
+    width: 75%;
+    height: 75%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    transform: rotate(-90deg); /* Rotate pieces back to upright */
+}
+
+/* Additional styles for specific white pawns */
+.white-a-pawn {
+    background-image: url('whitepawn1.png');
+}
+
+.white-b-pawn {
+    background-image: url('whitepawn2.png');
+}
+
+.white-c-pawn {
+    background-image: url('whitepawn3.png');
+}
+
+.white-d-pawn {
+    background-image: url('whitepawn4.png');
+}
+
+.white-e-pawn {
+    background-image: url('whitepawn5.png');
+}
+
+.white-f-pawn {
+    background-image: url('whitepawn6.png');
+}
+
+.white-g-pawn {
+    background-image: url('whitepawn7.png');
+}
+
+.white-h-pawn {
+    background-image: url('whitepawn8.png');
+}
+
+/* Additional styles for specific black pawns */
+.black-a-pawn {
+    background-image: url('q-rookblackpawn.png');
+}
+
+.black-b-pawn {
+    background-image: url('q-knightblackpawn.png');
+}
+
+.black-c-pawn {
+    background-image: url('q-bishopblackpawn.png');
+}
+
+.black-d-pawn {
+    background-image: url('queenblackpawn.png');
+}
+
+.black-e-pawn {
+    background-image: url('kingblackpawn.png');
+}
+
+.black-f-pawn {
+    background-image: url('k-bishopblackpawn.png');
+}
+
+.black-g-pawn {
+    background-image: url('k-knightblackpawn.png');
+}
+
+.black-h-pawn {
+    background-image: url('k-rookblackpawn.png');
+}
+
+/* Additional styles for other chess pieces */
+.white-king-rook {
+    background-image: url('whitekingrook.png');
+}
+.white-queen-rook {
+    background-image: url('whitequeenrook.png');
+}
+
+.white-king-knight {
+    background-image: url('whitekingknight.png');
+}
+.white-queen-knight {
+    background-image: url('whitequeenknight.png');
+}
+
+.white-king-bishop {
+    background-image: url('whitekingbishop.png');
+}
+
+.white-queen-bishop {
+    background-image: url('whitequeenbishop.png');
+}
+
+.white-queen {
+    background-image: url('whitequeen.png');
+}
+
+.white-king {
+    background-image: url('whiteking.png');
+}
+
+.black-queen-rook {
+    background-image: url('blacqueenrook.png');
+}
+
+.black-queen-knight {
+    background-image: url('blackqueenknight.png');
+}
+
+.black-queen-bishop {
+    background-image: url('blackqueenbishop.png');
+}
+.black-king-rook {
+    background-image: url('blackingkrook.png');
+}
+
+.black-king-knight {
+    background-image: url('blackkingknight.png');
+}
+
+.black-king-bishop {
+    background-image: url('blackkingbishop.png');
+}
+.black-queen {
+    background-image: url('blackqueen.png');
+}
+
+.black-king {
+    background-image: url('blackking.png');
+}
+
+/* Container for input and buttons */
+#controls-white, #controls-black {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #f5f5f5; /* Background color for the control panel */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 20px;
+}
+
+#controls-white {
+    right: 10px;
+}
+
+#controls-black {
+    left: 10px;
+}
+
+.response {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
+/* Style for input field and buttons */
+input[type="text"] {
+    width: 220px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+button:active {
+    background-color: #3e8e41; /* Even darker green when button is clicked */
+}
