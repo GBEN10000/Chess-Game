@@ -38,75 +38,42 @@ function createChessboard() {
 function getChessPieceClass(notation) {
     switch (notation) {
         // White pieces
-        case 'a1':
-            return 'white-queen-rook';
-        case 'h1':
-            return 'white-king-rook';
-        case 'b1':
-            return 'white-queen-knight';
-        case 'g1':
-            return 'white-king-knight';
-        case 'c1':
-            return 'white-queen-bishop';
-        case 'f1':
-            return 'white-king-bishop';
-        case 'd1':
-            return 'white-queen';
-        case 'e1':
-            return 'white-king';
-        case 'a2':
-            return 'white-pawn-1';
-        case 'b2':
-            return 'white-pawn-2';
-        case 'c2':
-            return 'white-pawn-3';
-        case 'd2':
-            return 'white-pawn-4';
-        case 'e2':
-            return 'white-pawn-5';
-        case 'f2':
-            return 'white-pawn-6';
-        case 'g2':
-            return 'white-pawn-7';
-        case 'h2':
-            return 'white-pawn-8';
+        case 'a1': return 'white-queen-rook';
+        case 'h1': return 'white-king-rook';
+        case 'b1': return 'white-queen-knight';
+        case 'g1': return 'white-king-knight';
+        case 'c1': return 'white-queen-bishop';
+        case 'f1': return 'white-king-bishop';
+        case 'd1': return 'white-queen';
+        case 'e1': return 'white-king';
+        case 'a2': return 'white-a-pawn';
+        case 'b2': return 'white-b-pawn';
+        case 'c2': return 'white-c-pawn';
+        case 'd2': return 'white-d-pawn';
+        case 'e2': return 'white-e-pawn';
+        case 'f2': return 'white-f-pawn';
+        case 'g2': return 'white-g-pawn';
+        case 'h2': return 'white-h-pawn';
 
         // Black pieces
-        case 'a8':
-            return 'black-queen-rook';
-        case 'h8':
-            return 'black-king-rook';
-        case 'b8':
-            return 'black-queenknight';
-        case 'g8':
-            return 'black-king-knight';
-        case 'c8':
-            return 'black-queenbishop';
-        case 'f8':
-            return 'black-king-bishop';
-        case 'd8':
-            return 'black-queen';
-        case 'e8':
-            return 'black-king';
-        case 'a7':
-            return 'black-pawn-1';
-        case 'b7':
-            return 'black-pawn-2';
-        case 'c7':
-            return 'black-pawn-3';
-        case 'd7':
-            return 'black-pawn-4';
-        case 'e7':
-            return 'black-pawn-5';
-        case 'f7':
-            return 'black-pawn-6';
-        case 'g7':
-            return 'black-pawn-7';
-        case 'h7':
-            return 'black-pawn-8';
+        case 'a8': return 'black-queen-rook';
+        case 'h8': return 'black-king-rook';
+        case 'b8': return 'black-queen-knight';
+        case 'g8': return 'black-king-knight';
+        case 'c8': return 'black-queen-bishop';
+        case 'f8': return 'black-king-bishop';
+        case 'd8': return 'black-queen';
+        case 'e8': return 'black-king';
+        case 'a7': return 'black-a-pawn';
+        case 'b7': return 'black-b-pawn';
+        case 'c7': return 'black-c-pawn';
+        case 'd7': return 'black-d-pawn';
+        case 'e7': return 'black-e-pawn';
+        case 'f7': return 'black-f-pawn';
+        case 'g7': return 'black-g-pawn';
+        case 'h7': return 'black-h-pawn';
 
-        default:
-            return null;
+        default: return null;
     }
 }
 
@@ -144,16 +111,497 @@ function movePiece(pieceId, targetSquareId) {
     // Play sound effect for the move
     playSound('move-sound.mp3');
 }
+// Correction dictionary for common typos and their corrections
+const corrections = {
+    // Pawn
+    'pound':'pawn',
+    '1':'pawn',
+    'one':'pawn',
+    'want':'pawn',
+    'on':'pawn',
+    'pan': 'pawn',
+    'porn': 'pawn',
+    'pon': 'pawn',
+    'pound': 'pawn',
+    'pwn': 'pawn',
+    'paan': 'pawn',
+    'paun': 'pawn',
+    'pewn': 'pawn',
+    'pown': 'pawn',
+    'paan': 'pawn',
+    'pwnk': 'pawn',
+    'pawwn': 'pawn',
+    'paawn': 'pawn',
+    'pawnk': 'pawn',
+    'pwn': 'pawn',
+    'paan': 'pawn',
+    'pown': 'pawn',
+    'paan': 'pawn',
+    'paan': 'pawn',
+    'pwnk': 'pawn',
+    'paan': 'pawn',
+    'pwn': 'pawn',
+    'paawn': 'pawn',
+    'paun': 'pawn',
+    'pawwn': 'pawn',
+    'pown': 'pawn',
+    'paan': 'pawn',
+    'pwn': 'pawn',
+    'paan': 'pawn',
+    'paun': 'pawn',
+    'pwnk': 'pawn',
+    'paw': 'pawn',
+    'pwn': 'pawn',
+    'paan': 'pawn',
 
-// Function to move a chess piece based on user input
+    // Knight
+    'kwon': 'knight',
+    'kight': 'knight',
+    'knite': 'knight',
+    'knigth': 'knight',
+    'knigt': 'knight',
+    'kight': 'knight',
+    'kwite': 'knight',
+    'kwight': 'knight',
+    'kwight': 'knight',
+    'kwn': 'knight',
+    'kwno': 'knight',
+    'knight': 'knight',
+    'knght': 'knight',
+    'knigh': 'knight',
+    'knite': 'knight',
+    'knigt': 'knight',
+    'knigt': 'knight',
+    'knigh': 'knight',
+    'knigt': 'knight',
+    'knignt': 'knight',
+    'knit': 'knight',
+    'kni': 'knight',
+    'knite': 'knight',
+    'kn': 'knight',
+
+    // Rook
+    'rooc': 'rook',
+    'rock': 'rook',
+    'rck': 'rook',
+    'rok': 'rook',
+    'rook': 'rook',
+    'rokk': 'rook',
+    'rooc': 'rook',
+    'rooky': 'rook',
+    'roc': 'rook',
+    'rookk': 'rook',
+    'rooc': 'rook',
+    'rork': 'rook',
+    'rokk': 'rook',
+    'rooc': 'rook',
+    'rooc': 'rook',
+    'roc': 'rook',
+    'rooc': 'rook',
+    'rook': 'rook',
+    'rooc': 'rook',
+    'rok': 'rook',
+    'rok': 'rook',
+    'rook': 'rook',
+    'rook': 'rook',
+    'rooc': 'rook',
+    'rooc': 'rook',
+    'rook': 'rook',
+    'rokk': 'rook',
+
+    // Bishop
+    'bishup': 'bishop',
+    'bisshop': 'bishop',
+    'bishoo': 'bishop',
+    'bshp': 'bishop',
+    'bish': 'bishop',
+    'bshop': 'bishop',
+    'bsp': 'bishop',
+    'bishp': 'bishop',
+    'bish': 'bishop',
+    'bishoo': 'bishop',
+    'bish': 'bishop',
+    'bsh': 'bishop',
+    'bishp': 'bishop',
+    'bshop': 'bishop',
+    'bsp': 'bishop',
+    'bishup': 'bishop',
+    'bisshop': 'bishop',
+    'bishup': 'bishop',
+    'bishp': 'bishop',
+    'bshp': 'bishop',
+    'bisshop': 'bishop',
+    'bish': 'bishop',
+    'bish': 'bishop',
+    'bishoo': 'bishop',
+    'bsh': 'bishop',
+
+    // Queen
+    'quenn': 'queen',
+    'quinn': 'queen',
+    'qun': 'queen',
+    'quee': 'queen',
+    'queeen': 'queen',
+    'quean': 'queen',
+    'quien': 'queen',
+    'quen': 'queen',
+    'quinn': 'queen',
+    'quenn': 'queen',
+    'queon': 'queen',
+    'qun': 'queen',
+    'que': 'queen',
+    'quenn': 'queen',
+    'quenn': 'queen',
+    'qun': 'queen',
+    'quee': 'queen',
+    'qun': 'queen',
+    'quenn': 'queen',
+    'quinn': 'queen',
+    'quean': 'queen',
+    'quean': 'queen',
+    'quen': 'queen',
+    'quinn': 'queen',
+    'queon': 'queen',
+    'queen': 'queen',
+
+    // King
+    'kng': 'king',
+    'king': 'king',
+    'kig': 'king',
+    'kign': 'king',
+    'kin': 'king',
+    'kng': 'king',
+    'kig': 'king',
+    'kingg': 'king',
+    'kink': 'king',
+    'king': 'king',
+    'kng': 'king',
+    'kng': 'king',
+    'king': 'king',
+    'kng': 'king',
+    'kng': 'king',
+    'king': 'king',
+    'kingg': 'king',
+    'kng': 'king',
+    'kig': 'king',
+    'kingg': 'king',
+    'king': 'king',
+    'kng': 'king',
+    'kng': 'king',
+    'kng': 'king',
+    'kng': 'king',
+
+    // Columns (a-h)
+    'a': 'a',
+    'aa': 'a',
+    'ah': 'a',
+    'aah': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+    'a': 'a',
+
+    'b': 'b',
+    'bb': 'b',
+    'bh': 'b',
+    'bbi': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+    'b': 'b',
+
+    'c': 'c',
+    'cc': 'c',
+    'ch': 'c',
+    'ci': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+    'c': 'c',
+
+    'd': 'd',
+    'dd': 'd',
+    'dh': 'd',
+    'di': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+    'd': 'd',
+
+    'i':'e',
+    'keep':'e',
+    'you':'e',
+    'e': 'e',
+    'ee': 'e',
+    'eh': 'e',
+    'ei': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+    'e': 'e',
+
+    'f': 'f',
+    'ff': 'f',
+    'fh': 'f',
+    'fi': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+    'f': 'f',
+
+    'g': 'g',
+    'gg': 'g',
+    'gh': 'g',
+    'gi': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+    'g': 'g',
+
+    'h': 'h',
+    'hh': 'h',
+    'h': 'h',
+    'hi': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h',
+    'h': 'h'
+};
+
+
+// Function to apply corrections to the input
+function applyCorrections(input) {
+    Object.keys(corrections).forEach(misspelling => {
+        const regex = new RegExp(`\\b${misspelling}\\b`, 'gi');
+        input = input.replace(regex, corrections[misspelling]);
+    });
+    return input;
+}
+
+// Function to handle white piece input
 function movePieceByInput() {
-    const userInput = document.getElementById('moveInput').value.trim();
-    
-    // Updated regex to match the expected input format
-    const regex = /^(white|black)-(pawn-[1-8]|king|queen|(king|queen)(rook|knight|bishop))\s*to\s*[a-h][1-8]$/;
-    
+    let userInput = document.getElementById('whiteMoveInput').value.trim();
+
+    // Apply auto-corrections
+    userInput = applyCorrections(userInput);
+
+    // If the input doesn't specify "white-", assume "white-"
+    if (!userInput.startsWith('white-') && !userInput.startsWith('black-')) {
+        userInput = 'white-' + userInput;
+    }
+
+    const whiteRegex = /^white-(([a-h]-pawn)|(king|queen)|(king|queen)-(rook|knight|bishop))\s*to\s*[a-h][1-8]$/;
+    const blackRegex = /^black-(([a-h]-pawn)|(king|queen)|(king|queen)-(rook|knight|bishop))\s*to\s*[a-h][1-8]$/;
+
+    // Combine the two regexes
+    const regex = new RegExp(whiteRegex.source + "|" + blackRegex.source);
+
     if (!userInput.match(regex)) {
-        alert('Invalid input. Please enter in the format "black-pawn-1 to a4" or "white-king-rook to h3".');
+        alert('Invalid input. Please enter in the format "e-pawn to e4" or "white-king-rook to h3".');
         return;
     }
 
@@ -169,8 +617,43 @@ function movePieceByInput() {
     movePiece(pieceElement.id, to);
 }
 
-// Function to start voice recognition
-function startVoiceCommand() {
+// Function to handle black piece input
+function moveBlackPieceByInput() {
+    let userInput = document.getElementById('blackMoveInput').value.trim();
+
+    // Apply auto-corrections
+    userInput = applyCorrections(userInput);
+
+    // If the input doesn't specify "white-" or "black-", assume "black-"
+    if (!userInput.startsWith('white-') && !userInput.startsWith('black-')) {
+        userInput = 'black-' + userInput;
+    }
+
+    const whiteRegex = /^white-(([a-h]-pawn)|(king|queen)|(king|queen)-(rook|knight|bishop))\s*to\s*[a-h][1-8]$/;
+    const blackRegex = /^black-(([a-h]-pawn)|(king|queen)|(king|queen)-(rook|knight|bishop))\s*to\s*[a-h][1-8]$/;
+
+    // Combine the two regexes
+    const regex = new RegExp(whiteRegex.source + "|" + blackRegex.source);
+
+    if (!userInput.match(regex)) {
+        alert('Invalid input. Please enter in the format "e-pawn to e4" or "black-king-rook to a4".');
+        return;
+    }
+
+    const [piece, to] = userInput.split(' to ');
+    const pieceClass = piece.split('-').join('-');
+    const pieceElement = document.querySelector(`.${pieceClass}`);
+
+    if (!pieceElement) {
+        alert('Piece not found on the board.');
+        return;
+    }
+
+    movePiece(pieceElement.id, to);
+}
+
+// Function to start voice recognition for white pieces
+function startWhiteVoiceCommand() {
     if (!('webkitSpeechRecognition' in window)) {
         alert("Sorry, your browser doesn't support voice recognition.");
         return;
@@ -182,14 +665,14 @@ function startVoiceCommand() {
     recognition.interimResults = false;
 
     recognition.onstart = function() {
-        console.log('Voice recognition started. Speak now.');
+        console.log('White voice recognition started. Speak now.');
     };
 
     recognition.onresult = function(event) {
         const voiceInput = event.results[0][0].transcript.toLowerCase();
         console.log('You said: ' + voiceInput);
 
-        processVoiceCommand(voiceInput);
+        processWhiteVoiceCommand(voiceInput);
     };
 
     recognition.onerror = function(event) {
@@ -203,30 +686,76 @@ function startVoiceCommand() {
     recognition.start();
 }
 
-function processVoiceCommand(voiceInput) {
-  // Normalize the voice input to handle common discrepancies
-  let normalizedInput = voiceInput.toLowerCase().replace('to', 'to').replace(' ', '-');
+// Function to start voice recognition for black pieces
+function startBlackVoiceCommand() {
+    if (!('webkitSpeechRecognition' in window)) {
+        alert("Sorry, your browser doesn't support voice recognition.");
+        return;
+    }
 
-  // Handle common misinterpretations
-  normalizedInput = normalizedInput
-    .replace(/([black|white])\s*(queen(rook|bishop)|knight|bishop|queen|king)\s*([a-h][1-8])/g, '$1-$2-$3') // Handle cases like "black queen rook to c6"
-    .replace(/rook\s*([a-h][1-8])/g, 'rook-to-$1') // Handle cases like "rook c6"
-    .replace(/knight\s*([a-h][1-8])/g, 'knight-to-$1') // Handle cases like "knight c6"
-    .replace(/bishop\s*([a-h][1-8])/g, 'bishop-to-$1') // Handle cases like "bishop c6"
-    .replace(/queen\s*([a-h][1-8])/g, 'queen-to-$1') // Handle cases like "queen c6"
-    .replace(/king\s*([a-h][1-8])/g, 'king-to-$1'); // Handle cases like "king c6"
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.continuous = false;
+    recognition.interimResults = false;
 
-  // Format the input to match the required format
-  const formattedInput = normalizedInput.replace(/-to-/g, ' to ');
+    recognition.onstart = function() {
+        console.log('Black voice recognition started. Speak now.');
+    };
 
-  // Update the input field and move the piece
-  document.getElementById('moveInput').value = formattedInput;
-  movePieceByInput();
+    recognition.onresult = function(event) {
+        const voiceInput = event.results[0][0].transcript.toLowerCase();
+        console.log('You said: ' + voiceInput);
+
+        processBlackVoiceCommand(voiceInput);
+    };
+
+    recognition.onerror = function(event) {
+        console.error('Voice recognition error:', event.error);
+    };
+
+    recognition.onend = function() {
+        console.log('Voice recognition ended.');
+    };
+
+    recognition.start();
 }
 
-function printResponse(message) {
-    const responseDiv = document.getElementById('response');
-    responseDiv.textContent = message;
+// Process voice commands for white pieces
+function processWhiteVoiceCommand(voiceInput) {
+    // Apply auto-corrections
+    voiceInput = applyCorrections(voiceInput);
+
+    // Normalize the voice input for white pieces
+    let normalizedInput = voiceInput.toLowerCase().replace('to', 'to').replace(' ', '-');
+    normalizedInput = normalizedInput.replace(/([white])\s*(queen(rook|bishop)|knight|bishop|queen|king)\s*([a-h][1-8])/g, '$1-$2-$3')
+        .replace(/rook\s*([a-h][1-8])/g, 'rook-to-$1')
+        .replace(/knight\s*([a-h][1-8])/g, 'knight-to-$1')
+        .replace(/bishop\s*([a-h][1-8])/g, 'bishop-to-$1')
+        .replace(/queen\s*([a-h][1-8])/g, 'queen-to-$1')
+        .replace(/king\s*([a-h][1-8])/g, 'king-to-$1');
+
+    const formattedInput = normalizedInput.replace(/-to-/g, ' to ');
+    document.getElementById('whiteMoveInput').value = formattedInput;
+    movePieceByInput();
+}
+
+// Process voice commands for black pieces
+function processBlackVoiceCommand(voiceInput) {
+    // Apply auto-corrections
+    voiceInput = applyCorrections(voiceInput);
+
+    // Normalize the voice input for black pieces
+    let normalizedInput = voiceInput.toLowerCase().replace('to', 'to').replace(' ', '-');
+    normalizedInput = normalizedInput.replace(/([black])\s*(queen(rook|bishop)|knight|bishop|queen|king)\s*([a-h][1-8])/g, '$1-$2-$3')
+        .replace(/rook\s*([a-h][1-8])/g, 'rook-to-$1')
+        .replace(/knight\s*([a-h][1-8])/g, 'knight-to-$1')
+        .replace(/bishop\s*([a-h][1-8])/g, 'bishop-to-$1')
+        .replace(/queen\s*([a-h][1-8])/g, 'queen-to-$1')
+        .replace(/king\s*([a-h][1-8])/g, 'king-to-$1');
+
+    const formattedInput = normalizedInput.replace(/-to-/g, ' to ');
+    document.getElementById('blackMoveInput').value = formattedInput;
+    moveBlackPieceByInput();
 }
 
 // Initialize the chessboard
