@@ -1,6 +1,6 @@
 /* General Styles */
 body {
-    background-color: #393745; /* Dark gray background */
+    background-color: #282825; /* Dark gray background */
     margin: 0;
     font-family: Arial, sans-serif;
 }
@@ -17,11 +17,9 @@ body {
     left: 50%; /* Move the chessboard right by 50% of the viewport width */
     transform: translate(-50%, -50%) rotate(90deg); /* Rotate the chessboard 90 degrees to the left */
     transform-origin: center; /* Ensure the rotation happens around the center */
-    /* Adjust the size of the chessboard to maintain its original appearance after rotation */
-    width: 89px * 8; /* 8 columns each 89px wide */
-    height: 89px * 8; /* 8 rows each 89px tall */
+    width: calc(89px * 8); /* 8 columns each 89px wide */
+    height: calc(89px * 8); /* 8 rows each 89px tall */
 }
-
 
 .square {
     width: 100%;
@@ -63,131 +61,42 @@ body {
 }
 
 /* Additional styles for specific white pawns */
-.white-a-pawn {
-    background-image: url('whitepawn1.png');
-}
-
-.white-b-pawn {
-    background-image: url('whitepawn2.png');
-}
-
-.white-c-pawn {
-    background-image: url('whitepawn3.png');
-}
-
-.white-d-pawn {
-    background-image: url('whitepawn4.png');
-}
-
-.white-e-pawn {
-    background-image: url('whitepawn5.png');
-}
-
-.white-f-pawn {
-    background-image: url('whitepawn6.png');
-}
-
-.white-g-pawn {
-    background-image: url('whitepawn7.png');
-}
-
-.white-h-pawn {
-    background-image: url('whitepawn8.png');
-}
+.white-a-pawn { background-image: url('whitepawn1.png'); }
+.white-b-pawn { background-image: url('whitepawn2.png'); }
+.white-c-pawn { background-image: url('whitepawn3.png'); }
+.white-d-pawn { background-image: url('whitepawn4.png'); }
+.white-e-pawn { background-image: url('whitepawn5.png'); }
+.white-f-pawn { background-image: url('whitepawn6.png'); }
+.white-g-pawn { background-image: url('whitepawn7.png'); }
+.white-h-pawn { background-image: url('whitepawn8.png'); }
 
 /* Additional styles for specific black pawns */
-.black-a-pawn {
-    background-image: url('q-rookblackpawn.png');
-}
-
-.black-b-pawn {
-    background-image: url('q-knightblackpawn.png');
-}
-
-.black-c-pawn {
-    background-image: url('q-bishopblackpawn.png');
-}
-
-.black-d-pawn {
-    background-image: url('queenblackpawn.png');
-}
-
-.black-e-pawn {
-    background-image: url('kingblackpawn.png');
-}
-
-.black-f-pawn {
-    background-image: url('k-bishopblackpawn.png');
-}
-
-.black-g-pawn {
-    background-image: url('k-knightblackpawn.png');
-}
-
-.black-h-pawn {
-    background-image: url('k-rookblackpawn.png');
-}
+.black-a-pawn { background-image: url('q-rookblackpawn.png'); }
+.black-b-pawn { background-image: url('q-knightblackpawn.png'); }
+.black-c-pawn { background-image: url('q-bishopblackpawn.png'); }
+.black-d-pawn { background-image: url('queenblackpawn.png'); }
+.black-e-pawn { background-image: url('kingblackpawn.png'); }
+.black-f-pawn { background-image: url('k-bishopblackpawn.png'); }
+.black-g-pawn { background-image: url('k-knightblackpawn.png'); }
+.black-h-pawn { background-image: url('k-rookblackpawn.png'); }
 
 /* Additional styles for other chess pieces */
-.white-king-rook {
-    background-image: url('whitekingrook.png');
-}
-.white-queen-rook {
-    background-image: url('whitequeenrook.png');
-}
-
-.white-king-knight {
-    background-image: url('whitekingknight.png');
-}
-.white-queen-knight {
-    background-image: url('whitequeenknight.png');
-}
-
-.white-king-bishop {
-    background-image: url('whitekingbishop.png');
-}
-
-.white-queen-bishop {
-    background-image: url('whitequeenbishop.png');
-}
-
-.white-queen {
-    background-image: url('whitequeen.png');
-}
-
-.white-king {
-    background-image: url('whiteking.png');
-}
-
-.black-queen-rook {
-    background-image: url('blacqueenrook.png');
-}
-
-.black-queen-knight {
-    background-image: url('blackqueenknight.png');
-}
-
-.black-queen-bishop {
-    background-image: url('blackqueenbishop.png');
-}
-.black-king-rook {
-    background-image: url('blackingkrook.png');
-}
-
-.black-king-knight {
-    background-image: url('blackkingknight.png');
-}
-
-.black-king-bishop {
-    background-image: url('blackkingbishop.png');
-}
-.black-queen {
-    background-image: url('blackqueen.png');
-}
-
-.black-king {
-    background-image: url('blackking.png');
-}
+.white-king-rook { background-image: url('whitekingrook.png'); }
+.white-queen-rook { background-image: url('whitequeenrook.png'); }
+.white-king-knight { background-image: url('whitekingknight.png'); }
+.white-queen-knight { background-image: url('whitequeenknight.png'); }
+.white-king-bishop { background-image: url('whitekingbishop.png'); }
+.white-queen-bishop { background-image: url('whitequeenbishop.png'); }
+.white-queen { background-image: url('whitequeen.png'); }
+.white-king { background-image: url('whiteking.png'); }
+.black-queen-rook { background-image: url('blacqueenrook.png'); }
+.black-queen-knight { background-image: url('blackqueenknight.png'); }
+.black-queen-bishop { background-image: url('blackqueenbishop.png'); }
+.black-king-rook { background-image: url('blackingkrook.png'); }
+.black-king-knight { background-image: url('blackkingknight.png'); }
+.black-king-bishop { background-image: url('blackkingbishop.png'); }
+.black-queen { background-image: url('blackqueen.png'); }
+.black-king { background-image: url('blackking.png'); }
 
 /* Container for input and buttons */
 #controls-white, #controls-black {
@@ -204,13 +113,8 @@ body {
     margin: 20px;
 }
 
-#controls-white {
-    right: 10px;
-}
-
-#controls-black {
-    left: 10px;
-}
+#controls-white { right: 10px; }
+#controls-black { left: 10px; }
 
 .response {
     margin-top: 20px;
@@ -240,10 +144,146 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #45a049; /* Darker green on hover */
+button:hover { background-color: #45a049; /* Darker green on hover */ }
+button:active { background-color: #3e8e41; /* Even darker green when button is clicked */ }
+
+/* Intro and Start Game Page Styles */
+.intro-container, .start-container, .game-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: baseline;
+    height: 90vh;
+}
+#introVideo {
+    display: block;
+    width: 100%;
+    box-shadow: 0 4px 8px rgb(255, 255, 255); /* Subtle shadow for depth */
 }
 
-button:active {
-    background-color: #3e8e41; /* Even darker green when button is clicked */
+#skipIntroBtn {
+    text-align: center;
+    font-family:'Courier New', Courier, monospace,Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 34px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #726b80, #04010c);
+    padding: 21px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.7);
+    transform: translateY(21%); /* Adjust for exact vertical center */
+}
+
+#intro {
+    display: none; /* Initially hidden */
+    position: relative;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+.right-side {
+display: flex;
+flex-direction: column;
+padding: 20px;
+background-color: #126a4a;
+border-radius: 10px;
+flex: 1;
+}
+
+.rules-container {
+flex: 1;
+max-height: 10%;
+padding: 20px;
+background-color: #000000; /* Light background for contrast */
+border-radius: 10px;
+box-shadow: 0 4px 8px rgb(255, 255, 255); /* Subtle shadow for depth */
+}
+.rules-container-commands {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 700px;
+    padding: 20px;
+    background-color: #ffffff; /* Light background for contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgb(0, 0, 0); /* Subtle shadow for depth */
+    transform: translateY(2%); /* Adjust for exact vertical center */
+    }
+.rules-heading {
+font-family: 'Garamond', serif; /* Classic serif font for vintage feel */
+font-size: 50px; /* Larger font size for prominence */
+font-weight: bold; /* Bold text for emphasis */
+text-align: center; /* Center align the heading */
+margin-top: 20px; /* Margin to space it from the top */
+color: #ffffff; /* Dark grey color for a classic look */
+text-shadow: 2px 2px 4px rgba(0,0,0,0.3); /* Soft shadow for depth */
+letter-spacing: 1px; /* Slightly spaced letters for a classic look */
+}
+
+.rules-list {
+list-style-type: decimal; /* Numbered list */
+padding-left: 20px; /* Space for bullet points */
+}
+
+.rules-list li {
+margin-bottom: 14px; /* Space between list items */
+line-height: 1.6; /* Better readability */
+font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+font-size: 21px; /* Font size for readability */
+font-weight:bolder;
+color: #000000; /* Dark grey color for classic look */
+text-shadow: 1px 1px 2px rgb(0, 0, 0);/*  Soft shadow for depth */
+font-weight: normal; /* Normal weight for a vintage style */
+}
+
+#startGame, #gamePage, #intro {
+    display: none;
+}
+/* Start Game Section */
+#startGame {
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+text-align: center;
+font-family: 'Courier New', Courier, monospace, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+font-size: 21px;
+font-weight: bold;
+background: linear-gradient(135deg, #6a4545, #000000);
+padding: 30px;
+border-radius: 15px;
+box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+position: absolute; /* Ensure it is positioned absolutely */
+top: 50%; /* Center vertically */
+left: 50%; /* Center horizontally */
+transform: translate(-50%, -50%); /* Adjust for the exact center */
+width: 80%; /* Optional: set a width for better responsiveness */
+max-width: 600px; /* Optional: limit the maximum width */
+}
+
+#startGame h1 {
+font-family: 'Verdana', sans-serif;
+font-size: 100px;
+color: #fff;
+margin: auto;
+text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.9);
+}
+/* Start Game Button */
+#startBtn {
+display: block; /* Make the button a block element to center it */
+margin: 0 auto; /* Center horizontally */
+font-family: 'Courier New', Courier, monospace, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+font-size: 34px;
+font-weight: bold;
+background: linear-gradient(135deg, #6805ca, #fb0202);
+padding: 30px;
+border-radius: 15px;
+box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+text-align: center; /* Center text inside the button */
+position: relative; /* Allows positioning relative to its container */
+top: 50%; /* Move it vertically centered */
+transform: translateY(-134%); /* Adjust for exact vertical center */
+}
+
+#gamePage {
+    display: none;
 }
