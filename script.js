@@ -1,3 +1,24 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Show the start game section initially
+    document.getElementById('startGame').style.display = 'block';
+
+    // Event listener for the Start Game button
+    document.getElementById('startBtn').addEventListener('click', function() {
+        // Hide the start game section
+        document.getElementById('startGame').style.display = 'none';
+        // Show the intro section
+        document.getElementById('intro').style.display = 'flex';
+    });
+
+    // Event listener for the Skip Intro button
+    document.getElementById('skipIntroBtn').addEventListener('click', function() {
+        // Hide the intro section
+        document.getElementById('intro').style.display = 'none';
+        // Show the game page section
+        document.getElementById('gamePage').style.display = 'block';
+    });
+});
+
 // Function to create the chessboard with notations and chess pieces
 function createChessboard() {
     const columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -147,7 +168,8 @@ const corrections = {
     'h5':['hp'],
     'queen-rook':['queen-roof','greenwood','wind-rook','green-room','twin-room','twin-rope','green-roof','windows','green-rook','twin-rook'],
     'queen-rook to':['window-to','window-take','queen-rook-to'],
-    'to e4':['taxi 4']
+    'to e4':['taxi 4'],
+    'queen to':['queen-to']
 };
 
 // Function to apply corrections to the input
