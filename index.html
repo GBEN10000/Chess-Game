@@ -7,23 +7,67 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
+  <!-- Start Game Section -->
+  <div id="startGame" class="start-container">
+    <h1>Ready To Play?</h1>
+    <button id="startBtn">Start Game</button>
+  </div>
+<!-- Intro Section -->
+<div id="intro">
+    <!-- Video Section -->
+    <div class="left-side" style="flex: 1; padding: 20px; display: flex; flex-direction: column; justify-content: flex-start;">
+        <video id="introVideo" controls>
+            <source src="intro-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <!-- Rules and Skip Intro Section -->
+    <div class="right-side">
+        <div class="rules-container">
+            <h2 class="rules-heading">Voice Command Rules</h2>
+        </div>
+        <div class="rules-container-commands">
+            <ul class="rules-list">
+                <li><strong>To Move a Pawn:</strong> a-pawn to a4, b-pawn to b4, c-pawn to c4...etc</li>    
+                <li><strong>To Move the King's Rook:</strong> king-rook to a1, king-rook to h1</li>
+                <li><strong>To Move the Queen's Rook:</strong> queen-rook to a8, queen-rook to h8</li>
+                <li><strong>To Move the King's Knight:</strong> king-knight to b1, king-knight to g1</li>
+                <li><strong>To Move the Queen's Knight:</strong> queen-knight to b8, queen-knight to g8</li>
+                <li><strong>To Move the King's Bishop:</strong> king-bishop to c1, king-bishop to f1</li>
+                <li><strong>To Move the Queen's Bishop:</strong> queen-bishop to c8, queen-bishop to f8</li>
+                <li><strong>To Move the White King:</strong> white-king to e1</li>
+                <li><strong>To Move the Black King:</strong> black-king to e8</li>
+                <li><strong>To Move the White Queen:</strong> white-queen to d1</li>
+                <li><strong>To Move the Black Queen:</strong> black-queen to d8</li>                             
+            </ul>
+        </div>
+        
+        <button id="skipIntroBtn">Skip</button>
+    </div>
+</div>
+
+  <!-- Game Page Section -->
+  <div id="gamePage" class="game-container">
     <div class="chessboard" id="chessboard"></div> 
 
-    <div id="controls-black">
+    <div id="controls-white" style="margin-top: 20px;">
         <input type="text" id="whiteMoveInput" placeholder="Enter move (e.g., e-pawn to e4)">
         <button onclick="movePieceByInput()">Move White</button>
         <button onclick="startWhiteVoiceCommand()">White Voice Command</button>
     </div>
 
-    <div id="controls-white">
+    <div id="controls-black" style="margin-top: 20px;">
         <input type="text" id="blackMoveInput" placeholder="Enter move (e.g., black-rook to a4)">
         <button onclick="moveBlackPieceByInput()">Move Black</button>
         <button onclick="startBlackVoiceCommand()">Black Voice Command</button>
     </div>
 
-    <div id="response" class="response"></div> <!-- Display response here -->
-    
+    <div id="response" class="response" style="margin-top: 20px;"></div>
+  </div>
 
-    <script src="script.js"></script>
+  <script src="script.js"></script>
+
 </body>
 </html>
+
