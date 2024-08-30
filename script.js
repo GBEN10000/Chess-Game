@@ -556,8 +556,8 @@ function typeText(elementId, text, speed) {
 }
 
 // Example usage
-const message = 'The commentary feature of this project requires an API key for proper functionality.';
-typeText('response-box', message, 50); // Adjust the speed as needed
+const message = 'The commentary feature of this project requires an API key for proper functionality. For security reasons the API key is not included in this repository. To enable commentary please obtain your own API key and integrate it into the code';
+typeText('response-box', message, 150); // Adjust the speed as needed
 
 createChessboard();
  
