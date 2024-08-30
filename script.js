@@ -560,5 +560,4 @@ const message = 'The commentary feature of this project requires an API key for 
 typeText('response-box', message, 50); // Adjust the speed as needed
 
 createChessboard();
-
  
