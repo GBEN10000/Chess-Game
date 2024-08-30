@@ -130,12 +130,15 @@ async function checkMoveCommentary(pieceId, targetSquareId) {
         console.log('Full API Response:', data); // Log the full API response
 
         const commentary = data.choices[0].message.content;
-        console.log('Move Commentary:', commentary); // Log commentary response
+       // console.log('Move Commentary:', commentary); // Log commentary response
 
         //const message = 'The commentary feature of this project requires an API key for proper functionality. For security reasons the API key is not included in this repository. To enable commentary please obtain your own API key and integrate it into the code.';
 
         // Display the fixed message with typing effect
         //typeText('response-box', commentary, 34); // Type out the message with a typing speed of 34 ms per character
+        // Example usage
+const message = 'The commentary feature of this project requires an API key for proper functionality.';
+typeText('response-box', message, 50); // Adjust the speed as needed
 
     } catch (error) {
         document.getElementById('response-box').textContent = `Error: ${error.message}`;
