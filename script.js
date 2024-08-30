@@ -131,7 +131,7 @@ async function checkMoveCommentary(pieceId, targetSquareId) {
 
         const commentary = data.choices[0].message.content;
         //console.log('Move Commentary:', commentary); // Log commentary response
-        const message = 'The commentary feature of this project requires an API key for proper functionality. For security reasons, the API key is not included in this repository. To enable commentary, please obtain your own API key and integrate it into the code.';
+        const message = 'The commentary feature of this project requires an API key for proper functionality. For security reasons the API key is not included in this repository. To enable commentary please obtain your own API key and integrate it into the code.';
 
         typeText('response-box', message, 34);
     } catch (error) {
