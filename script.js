@@ -559,8 +559,6 @@ function typeText(elementId, text, speed) {
 const message = 'The commentary feature of this project requires an API key for proper functionality.';
 typeText('response-box', message, 50); // Adjust the speed as needed
 
-/ Initialize the chessboard
 createChessboard();
 
- // Adjust the speed as needed
-
+ 
