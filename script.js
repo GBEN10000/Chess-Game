@@ -110,7 +110,7 @@ async function checkMoveCommentary(pieceId, targetSquareId) {
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
-                'Authorization':  'Api_key', // Replace with your actual API key
+                'Authorization': 'Bearer YOUR_API_KEY_HERE', // Replace with your actual API key
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -130,12 +130,15 @@ async function checkMoveCommentary(pieceId, targetSquareId) {
         console.log('Full API Response:', data); // Log the full API response
 
         const commentary = data.choices[0].message.content;
-        //console.log('Move Commentary:', commentary); // Log commentary response
+        console.log('Move Commentary:', commentary); // Log commentary response
+
         const message = 'The commentary feature of this project requires an API key for proper functionality. For security reasons the API key is not included in this repository. To enable commentary please obtain your own API key and integrate it into the code.';
 
-        typeText('response-box', message, 34);
+        // Display the fixed message with typing effect
+        typeText('response-box', message, 34); // Type out the message with a typing speed of 34 ms per character
+
     } catch (error) {
-        document.getElementById('moveCommentary').textContent = `Error: ${error.message}`;
+        document.getElementById('response-box').textContent = `Error: ${error.message}`;
         return `Error: ${error.message}`;
     }
 }
@@ -542,15 +545,14 @@ function typeText(elementId, text, speed) {
         if (index < text.length) {
             element.textContent += text.charAt(index);
             index++;
-            setTimeout(type, speed);
+            setTimeout(type, speed); // Set the typing speed
         }
     }
 
-    type();
+    element.textContent = ''; // Clear existing content
+    type(); // Start typing effect
 }
-
-
-// Initialize the chessboard
+/ Initialize the chessboard
 createChessboard();
 
  // Adjust the speed as needed
