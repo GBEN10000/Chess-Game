@@ -132,10 +132,10 @@ async function checkMoveCommentary(pieceId, targetSquareId) {
         const commentary = data.choices[0].message.content;
         console.log('Move Commentary:', commentary); // Log commentary response
 
-        const message = 'The commentary feature of this project requires an API key for proper functionality. For security reasons the API key is not included in this repository. To enable commentary please obtain your own API key and integrate it into the code.';
+        //const message = 'The commentary feature of this project requires an API key for proper functionality. For security reasons the API key is not included in this repository. To enable commentary please obtain your own API key and integrate it into the code.';
 
         // Display the fixed message with typing effect
-        typeText('response-box', message, 34); // Type out the message with a typing speed of 34 ms per character
+        //typeText('response-box', commentary, 34); // Type out the message with a typing speed of 34 ms per character
 
     } catch (error) {
         document.getElementById('response-box').textContent = `Error: ${error.message}`;
@@ -545,13 +545,17 @@ function typeText(elementId, text, speed) {
         if (index < text.length) {
             element.textContent += text.charAt(index);
             index++;
-            setTimeout(type, speed); // Set the typing speed
+            setTimeout(type, speed);
         }
     }
 
-    element.textContent = ''; // Clear existing content
-    type(); // Start typing effect
+    type();
 }
+
+// Example usage
+const message = 'The commentary feature of this project requires an API key for proper functionality. For security reasons the API key is not included in this repository.';
+typeText('response-box', message, 50); // Adjust the speed as needed
+
 / Initialize the chessboard
 createChessboard();
 
