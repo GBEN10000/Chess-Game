@@ -105,9 +105,48 @@ function playSound(soundFile) {
     const audio = new Audio(soundFile);
     audio.play();
 }
+async function checkMoveCommentary(pieceId, targetSquareId) {
+    try {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Authorization':  'xxxxxxxxxxxx', // Replace with your actual API key
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: 'gpt-3.5-turbo',
+                messages: [{
+                    role: 'user',
+                    content: `analyze this chess move: ${pieceId} to ${targetSquareId}`
+                }]
+            })
+        });
 
-// Function to move a chess piece to a specified square
-function movePiece(pieceId, targetSquareId) {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Full API Response:', data); // Log the full API response
+
+        const commentary = data.choices[0].message.content;
+        console.log('Move Commentary:', commentary); // Log commentary response
+
+        const message = 'The commentary feature of this project requires an API key for proper functionality. For security reasons, the API key is not included in this repository. To enable commentary, please obtain your own API key and integrate it into the code.';
+
+If you have any questions or need assistance with the API integration, feel free to reach out!
+
+        typeText('response-box',message, 50);
+    } catch (error) {
+        document.getElementById('moveCommentary').textContent = `Error: ${error.message}`;
+        return `Error: ${error.message}`;
+    }
+}
+
+// Function to move a piece and get commentary
+async function movePiece(pieceId, targetSquareId) {
+    console.log('Processing move:', pieceId, targetSquareId);
+
     const chessPiece = document.getElementById(pieceId);
     const targetSquare = document.getElementById(targetSquareId);
 
@@ -126,35 +165,40 @@ function movePiece(pieceId, targetSquareId) {
         // Remove the existing piece and play capture sound
         targetSquare.removeChild(existingPiece);
         playSound('capture-sound.mp3');
+    } else {
+        // Play move sound if there is no piece to capture
+        playSound('move-sound.mp3');
     }
 
     // Move the piece to the target square
     targetSquare.appendChild(chessPiece);
 
-    // Play sound effect for the move
-    playSound('move-sound.mp3');
+    // Get commentary for the move
+    await checkMoveCommentary(pieceId, targetSquareId);
 }
+
 const corrections = {
-    'pawn': ['on','want','pound', 'pan', 'porn', 'pon', 'pwn', 'paan', 'paun', 'pewn', 'pown'],
+    'pawn': ['phone','want','point','on','want','pound', 'pan', 'porn', 'pon', 'pwn', 'paan', 'paun', 'pewn', 'pown'],
     'knight': ['kwon', 'kight', 'knite', 'knigth', 'knigt', 'kwite', 'kwight', 'kwn', 'kwno','night'],
     'rook': ['road','room','rope','roof','route','rooc', 'rock', 'rck', 'rok', 'rokk', 'rooky'],
     'bishop': ['bishup', 'bisshop', 'bishoo', 'bshp', 'bishp', 'bsp'],
     'queen': ['main','wind','twin','green','quenn', 'quinn', 'qun', 'quee', 'queeen', 'quean', 'quen', 'queon'],
-    'king': ['kng', 'king', 'kig', 'kign', 'kin', 'kingg', 'kink'],
-    'a': ['aa', 'ah', 'aah'],
-    'b': ['bb', 'bh', 'bbi'],
+    'king': ['twin','thing','kng', 'king', 'kig', 'kign', 'kin', 'kingg', 'kink'],
+    'a': ['yah','aa', 'ah', 'aah'],
+    'b': ['be','we','bb', 'bh', 'bbi'],
     'c': ['sheep','she', 'cc', 'ch', 'ci'],
-    'd': ['dd', 'dh', 'di'],
+    'd': ['dd', 'dh', 'di','the'],
     'e': ['tea','i', 'keep', 'you', 'ee', 'eh', 'ei'],
     'f': ['ff', 'fh', 'fi'],
     'g': ['gg', 'gh', 'gi'],
     'h': ['hh', 'hi'],
     'e8': ['eat'],
     'queen': ['train'],
-    'to':['2','takes','text','tax'],
+    'to':['2','takes','text','tax','take'],
     'e3':['v3','23'],
     'king to e3':['kintu-e3'],
     'a4':['airport'],
+    'a4':['before'],
     'b6':['basics'],
     'b8':['b.ed'],
     'c1':['sewer'],
@@ -163,13 +207,22 @@ const corrections = {
     'e1':['even'],
     'f8':['effect'],
     'g1':['jeeva'],
-    'g':['j','zee'],
+    'g':['jeep','j','zee'],
     'g8':['g8h'],
     'h5':['hp'],
+    'd pawn':['deepan','deepon'],
+    'a pawn':['earphone','apon'],
+    'b-pawn':['b12','bound'],
     'queen-rook':['queen-roof','greenwood','wind-rook','green-room','twin-room','twin-rope','green-roof','windows','green-rook','twin-rook'],
     'queen-rook to':['window-to','window-take','queen-rook-to'],
+    'king-knight':['twin-knight'],
     'to e4':['taxi 4'],
-    'queen to':['queen-to']
+    'queen to':['queen-to'],
+    'side':['set'],
+    'castle':['cast','cat'],
+    'enpassant':['10%','inpass','10 pass','enpass','n pass','and passed'],
+    'c enpassant':['cn-passed','cn-pass','cn pass','sea and pass','sean-pass','cm-pass']
+    
 };
 
 // Function to apply corrections to the input
@@ -187,70 +240,70 @@ function applyCorrections(input) {
 // Function to handle white piece input
 function movePieceByInput() {
     let userInput = document.getElementById('whiteMoveInput').value.trim();
-
+    
     // Apply auto-corrections
     userInput = applyCorrections(userInput);
-
+    
     // If the input doesn't specify "white-", assume "white-"
     if (!userInput.startsWith('white-') && !userInput.startsWith('black-')) {
         userInput = 'white-' + userInput;
     }
-
+    
     const whiteRegex = /^white-(([a-h]-pawn)|(king|queen)|(king|queen)-(rook|knight|bishop))\s*to\s*[a-h][1-8]$/;
     const blackRegex = /^black-(([a-h]-pawn)|(king|queen)|(king|queen)-(rook|knight|bishop))\s*to\s*[a-h][1-8]$/;
-
+    
     // Combine the two regexes
     const regex = new RegExp(whiteRegex.source + "|" + blackRegex.source);
-
+    
     if (!userInput.match(regex)) {
         alert('Invalid input. Please enter in the format "e-pawn to e4" or "white-king-rook to h3".');
         return;
     }
-
+    
     const [piece, to] = userInput.split(' to ');
     const pieceClass = piece.split('-').join('-');
     const pieceElement = document.querySelector(`.${pieceClass}`);
-
+    
     if (!pieceElement) {
         alert('Piece not found on the board.');
         return;
     }
-
+    
     movePiece(pieceElement.id, to);
 }
 
 // Function to handle black piece input
 function moveBlackPieceByInput() {
     let userInput = document.getElementById('blackMoveInput').value.trim();
-
+    
     // Apply auto-corrections
     userInput = applyCorrections(userInput);
-
+    
     // If the input doesn't specify "white-" or "black-", assume "black-"
     if (!userInput.startsWith('white-') && !userInput.startsWith('black-')) {
         userInput = 'black-' + userInput;
     }
-
+    
     const whiteRegex = /^white-(([a-h]-pawn)|(king|queen)|(king|queen)-(rook|knight|bishop))\s*to\s*[a-h][1-8]$/;
     const blackRegex = /^black-(([a-h]-pawn)|(king|queen)|(king|queen)-(rook|knight|bishop))\s*to\s*[a-h][1-8]$/;
-
+    
     // Combine the two regexes
     const regex = new RegExp(whiteRegex.source + "|" + blackRegex.source);
-
+    
     if (!userInput.match(regex)) {
         alert('Invalid input. Please enter in the format "e-pawn to e4" or "black-king-rook to a4".');
         return;
     }
-
+    
     const [piece, to] = userInput.split(' to ');
     const pieceClass = piece.split('-').join('-');
     const pieceElement = document.querySelector(`.${pieceClass}`);
-
+    
     if (!pieceElement) {
         alert('Piece not found on the board.');
         return;
     }
-
+    
     movePiece(pieceElement.id, to);
 }
 
@@ -260,12 +313,12 @@ function startWhiteVoiceCommand() {
         alert("Sorry, your browser doesn't support voice recognition.");
         return;
     }
-
+    
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'en-US';
     recognition.continuous = false;
     recognition.interimResults = false;
-
+    
     recognition.onstart = function() {
         console.log('White voice recognition started. Speak now.');
     };
@@ -273,18 +326,18 @@ function startWhiteVoiceCommand() {
     recognition.onresult = function(event) {
         const voiceInput = event.results[0][0].transcript.toLowerCase();
         console.log('You said: ' + voiceInput);
-
+        
         processWhiteVoiceCommand(voiceInput);
     };
-
+    
     recognition.onerror = function(event) {
         console.error('Voice recognition error:', event.error);
     };
-
+    
     recognition.onend = function() {
         console.log('Voice recognition ended.');
     };
-
+    
     recognition.start();
 }
 
@@ -294,31 +347,31 @@ function startBlackVoiceCommand() {
         alert("Sorry, your browser doesn't support voice recognition.");
         return;
     }
-
+    
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'en-US';
     recognition.continuous = false;
     recognition.interimResults = false;
-
+    
     recognition.onstart = function() {
         console.log('Black voice recognition started. Speak now.');
     };
-
+    
     recognition.onresult = function(event) {
         const voiceInput = event.results[0][0].transcript.toLowerCase();
         console.log('You said: ' + voiceInput);
-
+        
         processBlackVoiceCommand(voiceInput);
     };
-
+    
     recognition.onerror = function(event) {
         console.error('Voice recognition error:', event.error);
     };
-
+    
     recognition.onend = function() {
         console.log('Voice recognition ended.');
     };
-
+    
     recognition.start();
 }
 
@@ -326,41 +379,182 @@ function startBlackVoiceCommand() {
 function processWhiteVoiceCommand(voiceInput) {
     // Apply auto-corrections
     voiceInput = applyCorrections(voiceInput);
-
+    
     // Normalize the voice input for white pieces
     let normalizedInput = voiceInput.toLowerCase().replace('to', 'to').replace(' ', '-');
     normalizedInput = normalizedInput.replace(/([white])\s*(queen(rook|bishop)|knight|bishop|queen|king)\s*([a-h][1-8])/g, '$1-$2-$3')
-        .replace(/rook\s*([a-h][1-8])/g, 'rook-to-$1')
-        .replace(/knight\s*([a-h][1-8])/g, 'knight-to-$1')
-        .replace(/bishop\s*([a-h][1-8])/g, 'bishop-to-$1')
-        .replace(/queen\s*([a-h][1-8])/g, 'queen-to-$1')
-        .replace(/king\s*([a-h][1-8])/g, 'king-to-$1');
-
+    .replace(/rook\s*([a-h][1-8])/g, 'rook-to-$1')
+    .replace(/knight\s*([a-h][1-8])/g, 'knight-to-$1')
+    .replace(/bishop\s*([a-h][1-8])/g, 'bishop-to-$1')
+    .replace(/queen\s*([a-h][1-8])/g, 'queen-to-$1')
+    .replace(/king\s*([a-h][1-8])/g, 'king-to-$1');
+    
     const formattedInput = normalizedInput.replace(/-to-/g, ' to ');
-    document.getElementById('whiteMoveInput').value = formattedInput;
-    movePieceByInput();
+    console.log('Normalized input for white pieces:', formattedInput);
+    
+    if (voiceInput.toLowerCase() === 'king side castle') {
+        console.log('Executing king-side castle...');
+        // Move the king-side castle
+        movePiece('e1-white-king', 'g1'); // Move king to g1
+        movePiece('h1-white-king-rook', 'f1'); // Move rook to f1
+        playSound('castle.mp3');
+    } else if (voiceInput.toLowerCase() === 'queen side castle') {
+        movePiece('e1-white-king', 'c1'); // Move king to c1
+        movePiece('h1-white-king-rook', 'd1'); // Move rook to d1
+        playSound('castle.mp3');
+    }
+    // En passant moves to the right
+    else if (formattedInput === 'a-enpassant to b6') {
+        movePiece('a2-white-a-pawn', 'b5'); // Capture b5 piece
+        movePiece('a2-white-a-pawn', 'b6'); // Move to b6
+    }
+    else if (formattedInput === 'b-enpassant to c6') {
+        movePiece('a2-white-a-pawn', 'b5'); // Capture b5 piece
+        movePiece('a2-white-a-pawn', 'b6'); // Move to b6
+    }
+    else if (formattedInput === 'c-enpassant to d6') {
+        movePiece('c2-white-c-pawn', 'd5'); // Capture d5 piece
+        movePiece('c2-white-c-pawn', 'd6'); // Move to d6
+    }else if (formattedInput === 'd-enpassant to e6') {
+        movePiece('a2-white-a-pawn', 'e5'); // Capture b5 piece
+        movePiece('a2-white-a-pawn', 'e6'); // Move to b6 
+    } else if (formattedInput === 'e-enpassant to f6') {
+        movePiece('e2-white-e-pawn', 'f5'); // Capture f5 piece
+        movePiece('e2-white-e-pawn', 'f6'); // Move to f6
+    } else if (formattedInput === 'f-enpassant to g6') {
+        movePiece('a2-white-a-pawn', 'g5'); // Capture b5 piece
+        movePiece('a2-white-a-pawn', 'g6'); // Move to b6
+    } 
+    else if (formattedInput === 'g-enpassant to h6') {
+        movePiece('g2-white-g-pawn', 'h5'); // Capture h5 piece
+        movePiece('g2-white-g-pawn', 'h6'); // Move to h6
+    }
+    // En passant moves to the left
+    else if (formattedInput === 'b-enpassant to a6') {
+        movePiece('b2-white-b-pawn', 'a5'); // Capture a5 piece
+        movePiece('b2-white-b-pawn', 'a6'); // Move to a6
+    } else if (formattedInput === 'c-enpassant to b6') {
+        movePiece('d2-white-d-pawn', 'b5'); // Capture c5 piece
+        movePiece('d2-white-d-pawn', 'b6'); // Move to c6
+    }  else if (formattedInput === 'd-enpassant to c6') {
+        movePiece('d2-white-d-pawn', 'c5'); // Capture c5 piece
+        movePiece('d2-white-d-pawn', 'c6'); // Move to c6
+    }else if (formattedInput === 'e-enpassant to d6') {
+        movePiece('d2-white-d-pawn', 'd5'); // Capture c5 piece
+        movePiece('d2-white-d-pawn', 'd6'); // Move to c6
+    } 
+    else if (formattedInput === 'f-enpassant to e6') {
+        movePiece('f2-white-f-pawn', 'e5'); // Capture e5 piece
+        movePiece('f2-white-f-pawn', 'e6'); // Move to e6
+    }else if (formattedInput === 'g-enpassant to f6') {
+        movePiece('d2-white-d-pawn', 'f5'); // Capture c5 piece
+        movePiece('d2-white-d-pawn', 'f6'); // Move to c6
+    }  
+    else if (formattedInput === 'h-enpassant to g6') {
+        movePiece('h2-white-h-pawn', 'g5'); // Capture g5 piece
+        movePiece('h2-white-h-pawn', 'g6'); // Move to g6
+    } else {
+        document.getElementById('whiteMoveInput').value = formattedInput;
+        movePieceByInput();
+    }
 }
 
 // Process voice commands for black pieces
 function processBlackVoiceCommand(voiceInput) {
     // Apply auto-corrections
     voiceInput = applyCorrections(voiceInput);
-
+    
     // Normalize the voice input for black pieces
     let normalizedInput = voiceInput.toLowerCase().replace('to', 'to').replace(' ', '-');
     normalizedInput = normalizedInput.replace(/([black])\s*(queen(rook|bishop)|knight|bishop|queen|king)\s*([a-h][1-8])/g, '$1-$2-$3')
-        .replace(/rook\s*([a-h][1-8])/g, 'rook-to-$1')
-        .replace(/knight\s*([a-h][1-8])/g, 'knight-to-$1')
-        .replace(/bishop\s*([a-h][1-8])/g, 'bishop-to-$1')
-        .replace(/queen\s*([a-h][1-8])/g, 'queen-to-$1')
-        .replace(/king\s*([a-h][1-8])/g, 'king-to-$1');
-
+    .replace(/rook\s*([a-h][1-8])/g, 'rook-to-$1')
+    .replace(/knight\s*([a-h][1-8])/g, 'knight-to-$1')
+    .replace(/bishop\s*([a-h][1-8])/g, 'bishop-to-$1')
+    .replace(/queen\s*([a-h][1-8])/g, 'queen-to-$1')
+    .replace(/king\s*([a-h][1-8])/g, 'king-to-$1');
+    
     const formattedInput = normalizedInput.replace(/-to-/g, ' to ');
-    document.getElementById('blackMoveInput').value = formattedInput;
-    moveBlackPieceByInput();
+    if (voiceInput.toLowerCase() === 'king side castle') {
+        console.log('Executing king-side castle...');
+        // Move the king-side castle
+        movePiece('e8-black-king', 'g8'); // Move king to g8
+        movePiece('h8-black-king-rook', 'f8'); // Move rook to f8
+        playSound('castle.mp3');
+    }
+    else if(voiceInput.toLowerCase() === 'queen side castle'){
+        movePiece('e8-black-king', 'c8'); // Move king to c8
+        movePiece('h8-black-king-rook', 'd8'); // Move rook to d8
+        playSound('castle.mp3');
+    }
+    // En passant moves to the right
+    else if (formattedInput === 'a-enpassant to b3') {
+        movePiece('a7-black-a-pawn', 'b4'); // Capture b5 piece
+        movePiece('a7-black-a-pawn', 'b3'); // Move to b6
+    } else if (formattedInput === 'b-enpassant to c3') {
+        movePiece('b7-black-b-pawn', 'c4'); // Capture c5 piece
+        movePiece('b7-black-b-pawn', 'c3'); // Move to c6
+    } else if (formattedInput === 'c-enpassant to d3') {
+        movePiece('c7-black-c-pawn', 'd4'); // Capture d5 piece
+        movePiece('c7-black-c-pawn', 'd3'); // Move to d6
+    } else if (formattedInput === 'd-enpassant to e3') {
+        movePiece('d7-black-d-pawn', 'e4'); // Capture e5 piece
+        movePiece('d7-black-d-pawn', 'e3'); // Move to e6
+    } else if (formattedInput === 'e-enpassant to f3') {
+        movePiece('e7-black-e-pawn', 'f4'); // Capture f5 piece
+        movePiece('e7-black-e-pawn', 'f3'); // Move to f6
+    } else if (formattedInput === 'f-enpassant to g3') {
+        movePiece('f7-black-f-pawn', 'g4'); // Capture g5 piece
+        movePiece('f7-black-f-pawn', 'g3'); // Move to g6
+    } else if (formattedInput === 'g-enpassant to h3') {
+        movePiece('g7-black-g-pawn', 'h4'); // Capture h5 piece
+        movePiece('g7-black-g-pawn', 'h3'); // Move to h6
+    }
+// En passant moves to the left
+else if (formattedInput === 'b-enpassant to a3') {
+    movePiece('b7-black-b-pawn', 'a4'); // Capture a5 piece
+    movePiece('b7-black-b-pawn', 'a3'); // Move to a6
+} else if (formattedInput === 'c-enpassant to b3') {
+    movePiece('c7-black-c-pawn', 'b4'); // Capture b5 piece
+    movePiece('c7-black-c-pawn', 'b3'); // Move to b6
+} else if (formattedInput === 'd-enpassant to c3') {
+    movePiece('d7-black-d-pawn', 'c4'); // Capture c5 piece
+    movePiece('d7-black-d-pawn', 'c3'); // Move to c6
+} else if (formattedInput === 'e-enpassant to d3') {
+    movePiece('e7-black-e-pawn', 'd4'); // Capture d5 piece
+    movePiece('e7-black-e-pawn', 'd3'); // Move to d6
+} else if (formattedInput === 'f-enpassant to e3') {
+    movePiece('f7-black-f-pawn', 'e4'); // Capture e5 piece
+    movePiece('f7-black-f-pawn', 'e3'); // Move to e6
+} else if (formattedInput === 'g-enpassant to f3') {
+    movePiece('g7-black-g-pawn', 'f4'); // Capture f5 piece
+    movePiece('g7-black-g-pawn', 'f3'); // Move to f6
+} else if (formattedInput === 'h-enpassant to g3') {
+    movePiece('h7-black-h-pawn', 'g4'); // Capture g5 piece
+    movePiece('h7-black-h-pawn', 'g3'); // Move to g6
 }
+else{
+    document.getElementById('blackMoveInput').value = formattedInput;
+        moveBlackPieceByInput();
+}
+}
+function typeText(elementId, text, speed) {
+    const element = document.getElementById(elementId);
+    let index = 0;
 
+    function type() {
+        if (index < text.length) {
+            element.textContent += text.charAt(index);
+            index++;
+            setTimeout(type, speed);
+        }
+    }
+
+    type();
+}
 
 
 // Initialize the chessboard
 createChessboard();
+
+ // Adjust the speed as needed
+
