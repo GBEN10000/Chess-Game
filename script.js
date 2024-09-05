@@ -1,9 +1,13 @@
+
 document.addEventListener('DOMContentLoaded', function() {
     // Show the start game section initially
     document.getElementById('startGame').style.display = 'block';
 
     // Event listener for the Start Game button
     document.getElementById('startBtn').addEventListener('click', function() {
+        // Play the sound immediately using the playSound function
+        playSound('button1.mp3');
+        
         // Hide the start game section
         document.getElementById('startGame').style.display = 'none';
         // Show the intro section
@@ -12,11 +16,66 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Event listener for the Skip Intro button
     document.getElementById('skipIntroBtn').addEventListener('click', function() {
+        playSound('button1.mp3');
         // Hide the intro section
         document.getElementById('intro').style.display = 'none';
         // Show the game page section
         document.getElementById('gamePage').style.display = 'block';
     });
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'z' || event.key === 'Z') {
+            startWhiteVoiceCommand();
+        } else if (event.key === 'm' || event.key === 'M') {
+            startBlackVoiceCommand();
+        }
+    });
+    
+    // Type out the rules and commands
+    const responseBox = document.getElementById('rules-container-commands');
+    const moves = {
+        'move-pawn': 'To Move a Pawn: - a pawn to a4, b pawn to b4',
+        'move-kings-rook': 'To Move the King\'s Rook: - king rook to a1',
+        'move-queens-rook': 'To Move the Queen\'s Rook: - queen rook to a8',
+        'move-kings-knight': 'To Move the King\'s Knight: - king knight to b1',
+        'move-queens-knight': 'To Move the Queen\'s Knight: - queen knight to b8',
+        'move-kings-bishop': 'To Move the King\'s Bishop: - king bishop to c1',
+        'move-queens-bishop': 'To Move the Queen\'s Bishop: - queen bishop to c8',
+        'move-white-king': 'To Move the White King: - white king to e1',
+        'move-black-king': 'To Move the Black King: - black king to e8',
+        'move-white-queen': 'To Move the White Queen: - white queen to d1',
+        'move-black-queen': 'To Move the Black Queen: - black queen to d8',
+        'move-enpassant': 'To Make an Enpassant Move: - a enpass to \'position\''
+    };
+
+    function typeText(elementId, text, speed, callback) {
+        const element = document.getElementById(elementId);
+        let index = 0;
+        let accumulatedText = element.innerHTML; // Start with the existing text
+
+        function type() {
+            if (index < text.length) {
+                accumulatedText += text.charAt(index);
+                element.innerHTML = accumulatedText + '<br>'; // Add <br> for line breaks
+                index++;
+                setTimeout(type, speed);
+            } else if (callback) {
+                setTimeout(callback, 500); // Optional delay before calling the callback
+            }
+        }
+
+        type();
+    }
+
+    function typeNext() {
+        const key = Object.keys(moves)[0];
+        if (key) {
+            const text = moves[key];
+            delete moves[key];
+            typeText('rules-container-commands', text, 10, typeNext);
+        }
+    }
+
+    typeNext();
 });
 
 // Function to create the chessboard with notations and chess pieces
@@ -30,7 +89,6 @@ function createChessboard() {
 
         for (let col = 0; col < 8; col++) {
             const squareDiv = document.createElement('div');
-            // Update the class to match the rotated board orientation
             squareDiv.className = (row + col) % 2 === 0 ? 'square black' : 'square white';
             squareDiv.id = columns[7 - col] + (9 - row); // Adjust IDs for new orientation
 
@@ -55,10 +113,44 @@ function createChessboard() {
         chessboardContainer.appendChild(rowDiv);
     }
 }
+function valutbox() {
+    const columns = ['i', 'j', 'k'];
+    const vaultContainer = document.getElementById('vaultbox');
 
+    for (let row = 1; row <= 3; row++) {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'row';
+
+        for (let col = 0; col < 3; col++) {
+            const squareDiv = document.createElement('div');
+            squareDiv.className = (row + col) % 2 === 0 ? 'square black' : 'square white';
+            squareDiv.id = columns[col] + row;
+
+            const notation = document.createElement('div');
+            notation.className = 'notation';
+            notation.textContent = columns[col] + row;
+
+            // Check and append pieces if they exist
+            const pieceClass = getVaultPieceClass(columns[col] + row);
+            if (pieceClass) {
+                const chessPiece = document.createElement('div');
+                chessPiece.className = 'chess-piece ' + pieceClass;
+                chessPiece.draggable = true;
+                chessPiece.id = columns[col] + row + '-' + pieceClass;
+                squareDiv.appendChild(chessPiece);
+            }
+
+            squareDiv.appendChild(notation);
+            rowDiv.appendChild(squareDiv);
+        }
+
+        vaultContainer.appendChild(rowDiv);
+    }
+}
 
 // Function to get the chess piece class based on notation value
 function getChessPieceClass(notation) {
+    console.log('notation',notation);
     switch (notation) {
         // White pieces
         case 'a1': return 'white-queen-rook';
@@ -99,6 +191,19 @@ function getChessPieceClass(notation) {
         default: return null;
     }
 }
+function getVaultPieceClass(notation) {
+    switch (notation) {
+        case 'i1': return 'white-new-rook';
+        case 'j1': return 'white-new-knight';
+        case 'k1': return 'white-new-bishop';
+        case 'i2': return 'black-new-rook';
+        case 'j2': return 'black-new-knight';
+        case 'k2': return 'black-new-bishop';
+        case 'i3': return 'white-new-queen';
+        case 'j3': return 'black-new-queen';
+        default: return null;
+    }
+}
 
 // Function to play a sound
 function playSound(soundFile) {
@@ -110,43 +215,55 @@ async function checkMoveCommentary(pieceId, targetSquareId) {
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer YOUR_API_KEY_HERE', // Replace with your actual API key
+                'Authorization': 'Bearer API_KEY', // Replace with your actual API key
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 model: 'gpt-3.5-turbo',
                 messages: [{
                     role: 'user',
-                    content: `analyze this chess move: ${pieceId} to ${targetSquareId}`
+                    content: `Analyze this chess move: ${pieceId} to ${targetSquareId}`
                 }]
             })
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            console.error('HTTP error:', response.status, response.statusText);
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const data = await response.json();
         console.log('Full API Response:', data); // Log the full API response
 
-        const commentary = data.choices[0].message.content;
-       // console.log('Move Commentary:', commentary); // Log commentary response
+        if (data.choices && data.choices.length > 0) {
+            const commentary = data.choices[0].message.content;
+            console.log('Move Commentary:', commentary); // Log commentary response
+            const responseBox = document.getElementById('response-box');
 
-        //const message = 'The commentary feature of this project requires an API key for proper functionality. For security reasons the API key is not included in this repository. To enable commentary please obtain your own API key and integrate it into the code.';
-
-        // Display the fixed message with typing effect
-        //typeText('response-box', commentary, 34); // Type out the message with a typing speed of 34 ms per character
-        // Example usage
-const message = 'The commentary feature of this project requires an API key for proper functionality.';
-typeText('response-box', message, 50); // Adjust the speed as needed
-
+            if (responseBox) {
+                responseBox.textContent = ''; // Clear previous content
+                typeText('response-box', commentary, 10); // Ensure typeText function exists
+            } else {
+                console.error('Element with id "response-box" not found.');
+            }
+        } else {
+            console.error('No choices found in API response.');
+        }
     } catch (error) {
-        document.getElementById('response-box').textContent = `Error: ${error.message}`;
+        console.error('Error in checkMoveCommentary:', error); // Enhanced error logging
+        const moveCommentary = document.getElementById('moveCommentary');
+        if (moveCommentary) {
+            moveCommentary.textContent = `Error: ${error.message}`;
+        }
         return `Error: ${error.message}`;
     }
 }
 
-// Function to move a piece and get commentary
+let previousFromSquare = null;
+let previousToSquare = null;
+let remainingKingColor = 'both'; // 'white', 'black', or 'both'
+let moveHistory = [];
+
 async function movePiece(pieceId, targetSquareId) {
     console.log('Processing move:', pieceId, targetSquareId);
 
@@ -158,27 +275,99 @@ async function movePiece(pieceId, targetSquareId) {
         return;
     }
 
-    // Remove the piece from its current square
+    // Save the current move before proceeding
+    saveCurrentMove(chessPiece, targetSquare);
+
     const currentSquare = chessPiece.parentElement;
+
+    // Clear previous highlights
+    if (previousFromSquare && previousToSquare) {
+        previousFromSquare.classList.remove('highlighted-from');
+        previousToSquare.classList.remove('highlighted-to');
+    }
+
+    // Highlight the current move
+    currentSquare.classList.add('highlighted-from');
+    targetSquare.classList.add('highlighted-to');
+
+    // Update the global references for highlight
+    previousFromSquare = currentSquare;
+    previousToSquare = targetSquare;
+
+    // Move the piece
     currentSquare.removeChild(chessPiece);
 
-    // Check if the target square already has a piece
+    // Handle any captured piece
     const existingPiece = targetSquare.querySelector('.chess-piece');
     if (existingPiece) {
-        // Remove the existing piece and play capture sound
+        if (!(
+            existingPiece.id.includes('rook') ||
+            existingPiece.id.includes('knight') ||
+            existingPiece.id.includes('bishop') ||
+            existingPiece.id.includes('pawn') ||
+            existingPiece.id.includes('queen')
+        )) {
+            const capturedKingColor = existingPiece.id.includes('white') ? 'white' : 'black';
+            const winnerColor = capturedKingColor === 'white' ? 'black' : 'white';
+            remainingKingColor = winnerColor;
+            console.log('Checkmate! Showing banner for:', winnerColor);
+            showCheckmateBanner();
+            playSound('winning.mp3');
+        }
         targetSquare.removeChild(existingPiece);
         playSound('capture-sound.mp3');
     } else {
-        // Play move sound if there is no piece to capture
         playSound('move-sound.mp3');
     }
 
-    // Move the piece to the target square
     targetSquare.appendChild(chessPiece);
-
-    // Get commentary for the move
     await checkMoveCommentary(pieceId, targetSquareId);
 }
+
+function saveCurrentMove(chessPiece, targetSquare) {
+    const currentSquare = chessPiece.parentElement;
+    const moveRecord = {
+        pieceId: chessPiece.id,
+        fromSquareId: currentSquare.id,
+        toSquareId: targetSquare.id,
+        capturedPieceId: targetSquare.querySelector('.chess-piece') ? targetSquare.querySelector('.chess-piece').id : null
+    };
+    moveHistory.push(moveRecord);
+}
+
+function undoMove() {
+    if (moveHistory.length === 0) return;
+
+    const lastMove = moveHistory.pop();
+    const chessPiece = document.getElementById(lastMove.pieceId);
+
+    // Move the piece back to its original square
+    const fromSquare = document.getElementById(lastMove.fromSquareId);
+    const toSquare = document.getElementById(lastMove.toSquareId);
+
+    toSquare.removeChild(chessPiece);
+    fromSquare.appendChild(chessPiece);
+
+    // Restore the captured piece, if any
+    if (lastMove.capturedPieceId) {
+        const capturedPiece = document.createElement('div');
+        capturedPiece.className = 'chess-piece ' + lastMove.capturedPieceId.split('-')[1];
+        capturedPiece.id = lastMove.capturedPieceId;
+        toSquare.appendChild(capturedPiece);
+    }
+
+    // Clear highlights
+    if (previousFromSquare && previousToSquare) {
+        previousFromSquare.classList.remove('highlighted-from');
+        previousToSquare.classList.remove('highlighted-to');
+    }
+
+    previousFromSquare = null;
+    previousToSquare = null;
+}
+
+// Bind the undo function to the undo button
+document.getElementById('undoBtn').addEventListener('click', undoMove);
 
 const corrections = {
     'pawn': ['phone','want','point','on','want','pound', 'pan', 'porn', 'pon', 'pwn', 'paan', 'paun', 'pewn', 'pown'],
@@ -189,7 +378,7 @@ const corrections = {
     'king': ['twin','thing','kng', 'king', 'kig', 'kign', 'kin', 'kingg', 'kink'],
     'a': ['yah','aa', 'ah', 'aah'],
     'b': ['be','we','bb', 'bh', 'bbi'],
-    'c': ['sheep','she', 'cc', 'ch', 'ci'],
+    'c': ['sea','sheep','she', 'cc', 'ch', 'ci'],
     'd': ['dd', 'dh', 'di','the'],
     'e': ['tea','i', 'keep', 'you', 'ee', 'eh', 'ei'],
     'f': ['ff', 'fh', 'fi'],
@@ -219,6 +408,7 @@ const corrections = {
     'queen-rook':['queen-roof','greenwood','wind-rook','green-room','twin-room','twin-rope','green-roof','windows','green-rook','twin-rook'],
     'queen-rook to':['window-to','window-take','queen-rook-to'],
     'king-knight':['twin-knight'],
+    'black-pink':['blackpink'],
     'to e4':['taxi 4'],
     'queen to':['queen-to'],
     'side':['set'],
@@ -252,8 +442,8 @@ function movePieceByInput() {
         userInput = 'white-' + userInput;
     }
     
-    const whiteRegex = /^white-(([a-h]-pawn)|(king|queen)|(king|queen)-(rook|knight|bishop))\s*to\s*[a-h][1-8]$/;
-    const blackRegex = /^black-(([a-h]-pawn)|(king|queen)|(king|queen)-(rook|knight|bishop))\s*to\s*[a-h][1-8]$/;
+    const whiteRegex = /^white-([a-h]-pawn)|((king|queen|new)|(king|queen|new)-(rook|knight|bishop))\s*to\s*[a-h][1-8]$/;
+    const blackRegex = /^black-([a-h]-pawn)|((king|queen|new)|(king|queen|new)-(rook|knight|bishop))\s*to\s*[a-h][1-8]$/;
     
     // Combine the two regexes
     const regex = new RegExp(whiteRegex.source + "|" + blackRegex.source);
@@ -287,8 +477,8 @@ function moveBlackPieceByInput() {
         userInput = 'black-' + userInput;
     }
     
-    const whiteRegex = /^white-(([a-h]-pawn)|(king|queen)|(king|queen)-(rook|knight|bishop))\s*to\s*[a-h][1-8]$/;
-    const blackRegex = /^black-(([a-h]-pawn)|(king|queen)|(king|queen)-(rook|knight|bishop))\s*to\s*[a-h][1-8]$/;
+    const whiteRegex = /^white-([a-h]-pawn)|((king|queen|new)|(king|queen|new)-(rook|knight|bishop))\s*to\s*[a-h][1-8]$/;
+    const blackRegex = /^black-([a-h]-pawn)|((king|queen|new)|(king|queen|new)-(rook|knight|bishop))\s*to\s*[a-h][1-8]$/;
     
     // Combine the two regexes
     const regex = new RegExp(whiteRegex.source + "|" + blackRegex.source);
@@ -486,7 +676,7 @@ function processBlackVoiceCommand(voiceInput) {
     }
     else if(voiceInput.toLowerCase() === 'queen side castle'){
         movePiece('e8-black-king', 'c8'); // Move king to c8
-        movePiece('h8-black-king-rook', 'd8'); // Move rook to d8
+        movePiece('a8-black-king-rook', 'd8'); // Move rook to d8
         playSound('castle.mp3');
     }
     // En passant moves to the right
@@ -554,10 +744,56 @@ function typeText(elementId, text, speed) {
 
     type();
 }
+function showCheckmateBanner() {
+    const banner = document.createElement('div');
+    banner.id = 'checkmate-banner';
+    banner.style.position = 'fixed';
+    banner.style.top = '0';
+    banner.style.left = '0';
+    banner.style.width = '100%';
+    banner.style.height = '100%';
+    banner.style.backgroundColor = 'rgba(0, 0, 0, 0.85)';
+    banner.style.color = '#f8d210';
+    banner.style.display = 'flex';
+    banner.style.alignItems = 'center';
+    banner.style.justifyContent = 'center';
+    banner.style.fontSize = '4rem';
+    banner.style.zIndex = '1000';
+    banner.style.fontFamily = "'Cinzel', serif";
+    banner.style.textTransform = 'uppercase';
+    banner.style.letterSpacing = '2px';
+    banner.style.textShadow = '0 0 10px #f8d210, 0 0 20px #f8d210, 0 0 30px #f8d210';
 
-// Example usage
-const message = 'The commentary feature of this project requires an API key for proper functionality. For security reasons the API key is not included in this repository. To enable commentary please obtain your own API key and integrate it into the code';
-typeText('response-box', message, 150); // Adjust the speed as needed
+    banner.textContent = `${remainingKingColor.charAt(0).toUpperCase() + remainingKingColor.slice(1)} Wins!`;
 
-createChessboard();
- 
+    // Add animation for fade-in
+    banner.style.opacity = '0';
+    banner.style.transition = 'opacity 1.5s ease-in-out';
+    setTimeout(() => {
+        banner.style.opacity = '1';
+    }, 100);
+
+    document.body.appendChild(banner);
+
+    // Optional: Auto-remove the banner after a few seconds with fade-out effect
+    setTimeout(() => {
+        banner.style.opacity = '0';
+        setTimeout(() => {
+            document.body.removeChild(banner);
+        }, 1500);
+    }, 5000);
+}
+
+function restartGame() {
+    // Reset game state, reload the board, etc.
+    location.reload(); // Simple reload to restart the game
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    createChessboard();
+   
+});
+document.addEventListener('DOMContentLoaded', function() {
+    valutbox();
+});
+
